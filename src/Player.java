@@ -3,9 +3,13 @@ public class Player {
     private int health;
     private int gold;
     private boolean hasHealthPot;
-    private Sword sword;
+    private Weapon weapon;
 
     public Player(String name){
         this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 }
