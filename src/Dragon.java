@@ -34,6 +34,29 @@ public class Dragon {
 
     /* Dragon of Vitality */
     public double heal(){
-        return health * Math.random()/4;
+        return maxHealth * Math.random() / 4;
     }
+
+    public double bigHeal(){ // aoe
+        return maxHealth * Math.random() / 2;
+    }
+
+    /* Berserker Dragon */
+    public void powerAmplification(double multiplier){
+        atk *= multiplier;
+    }
+
+    // multi hit attack (3rd element is damage)
+    public int[] berserk(){
+        int[] targets = new int[3];
+        targets[0] = (int)(Math.random() * 2);
+        targets[1] = (int)(Math.random() * 2);
+        targets[2] = atk;
+        return targets;
+    }
+
+    /* Corrupted Dragon <Master Mode Only>
+    * Copies abilities of other dragon types*/
+
+
 }

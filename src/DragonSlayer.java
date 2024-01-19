@@ -18,7 +18,9 @@ public class DragonSlayer {
     }
 
     public void play(){
+        while (!gameOver){
 
+        }
     }
 
     public void introDialogue(){
