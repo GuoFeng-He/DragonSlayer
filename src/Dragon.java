@@ -13,7 +13,7 @@ public class Dragon {
     }
 
     private void setStats(){
-        health = 100 * 3 * (level * 2) * DragonSlayer.difficultyScale;
+        health = 100 * 3 * level * DragonSlayer.difficultyScale;
         if (type.equals("Dragon of Vitality")){
             health *= 1.5;
         }
@@ -72,11 +72,11 @@ public class Dragon {
 
     /* Dragon of Vitality */
     public double heal(){
-        return maxHealth * Math.random() / 4;
+        return maxHealth * (Math.random() + 0.3);
     }
 
     public double bigHeal(){ // aoe
-        return maxHealth * Math.random() / 2;
+        return maxHealth * (Math.random() + 0.75);
     }
 
     /* Berserker Dragon */
@@ -97,7 +97,7 @@ public class Dragon {
             if (player.dodge()){
                 System.out.println("You dodged the " + type + "'s claw!");
             } else {
-                System.out.println("The " + type + " dragon hit you for " + damage);
+                System.out.println("The " + type + " hit you for " + damage);
                 player.damage(damage);
             }
         } else if (random == 2){
@@ -128,7 +128,7 @@ public class Dragon {
                     System.out.println("You took " + damage + " damage");
                     player.damage(damage);
                 }
-            } else {
+            } else if (type.equals("Phoenix Dragon")) {
                 damage = everlastingBurn();
                 System.out.println("The Phoenix Dragon scorched you with its flames!");
                 if (player.dodge()){
@@ -145,17 +145,17 @@ public class Dragon {
 
     public Dragon[] death(Dragon[] mobs, Player player){
         System.out.println(type + " down!");
-        Dragon[] oldMobs = mobs;
         Dragon[] newMobs = new Dragon[mobs.length];
 
         int idx = 0;
-        for (int i = 0; i < oldMobs.length; i++){
+        for (int i = 0; i < mobs.length; i++){
             if (!(mobs[i] == this)){
-                newMobs[idx] = oldMobs[i];
+                newMobs[idx] = mobs[i];
                 idx++;
             }
         }
         loot(player);
+
         return newMobs;
     }
 
@@ -195,6 +195,7 @@ public class Dragon {
             System.out.println("You got a " + newWeapon.getName() + "!");
         }
         System.out.println("The dragon gave you 10 gold!");
+        System.out.println();
         player.addGold(10);
     }
 

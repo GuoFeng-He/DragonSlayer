@@ -6,7 +6,6 @@ public class Room {
     private int numberOfMobs;
     private int dragonLevels;
     private Dragon[] mobs;
-    private boolean isBoss;
     private boolean cleared;
 
     public Room(){;
@@ -35,7 +34,6 @@ public class Room {
 
     public void setRoom(){
         numberOfMobs = 0;
-        isBoss = false;
         cleared = false;
         if (DragonSlayer.difficultyScale == 1) {
             entranceText = "";
@@ -67,7 +65,6 @@ public class Room {
             }
         } else {
             if (roomNum == 1) {
-                isBoss = true;
                 roomName = "The Eerie Entrance (Room 1 / 5)";
                 entranceText = "The entrance of the den is in ruins. Something is not right.";
                 numberOfMobs = 2;
@@ -78,7 +75,6 @@ public class Room {
                 numberOfMobs = 3;
                 dragonLevels = 2;
             } else if (roomNum == 3) {
-                isBoss = true;
                 roomName = "The Hopeless Hatchery (Room 3 / 5)";
                 entranceText = "An empty room full of cracked dragon eggs. You swear roars of anguish could still be heard.";
                 numberOfMobs = 4;
@@ -89,7 +85,6 @@ public class Room {
                 numberOfMobs = 4;
                 dragonLevels = 3;
             } else if (roomNum == 5){
-                isBoss = true;
                 roomName = "The Treasure Room? (Room 5 / 5)"; // do this
                 entranceText = "It's time to end this.";
                 numberOfMobs = 5;
@@ -125,19 +120,23 @@ public class Room {
         }
     }
 
-    public int lowestEmptyIdx(){
+    public boolean allNull(){
         for (int i = 0; i < mobs.length; i++){
-            if (mobs[i] == null){
-                return i;
+            if (mobs[i] != null){
+                return false;
             }
         }
-        return -1;
+        return true;
     }
 
     public void cleared(){
-        if (lowestEmptyIdx() == -1){
+        if (allNull()){
             cleared = true;
         }
+    }
+
+    public void changeMobs(Dragon[] newMobs){
+        mobs = newMobs;
     }
 
 }

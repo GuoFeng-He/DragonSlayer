@@ -1,4 +1,3 @@
-import java.util.Locale;
 import java.util.Scanner;
 public class DragonSlayer {
     private Scanner scan;
@@ -38,8 +37,13 @@ public class DragonSlayer {
 
                 player.printStats();
                 player.act(newRoom);
+                if (Player.burnDuration > 0) {
+                    player.burnDamage();
+                }
                 for (Dragon dragon: newRoom.getMobs()){
-                    dragon.ability(player, newRoom.getMobs());
+                    if (dragon != null && dragon.getHealth() > 0) {
+                        dragon.ability(player, newRoom.getMobs());
+                    }
                     if (player.getHealth() < 0){
                         gameOver = true;
                     }
@@ -48,7 +52,7 @@ public class DragonSlayer {
             }
             int intermission = 0;
             while (intermission != 8 && !gameOver){
-                System.out.println("Intermission!");
+                System.out.println("\nIntermission!");
                 System.out.println("1. Search Room");
                 System.out.println("2. Print Armor Stats");
                 System.out.println("3. Print Weapon Stats");
@@ -58,6 +62,7 @@ public class DragonSlayer {
                 System.out.println("7. Upgrade Current Weapon");
                 System.out.println("8. Exit");
                 intermission = scan.nextInt();
+                System.out.println();
                 intermission(intermission, newRoom);
             }
         }
@@ -126,10 +131,12 @@ public class DragonSlayer {
             int weapon = scan.nextInt() - 1;
             player.changeWeapon(player.getWeaponInventory()[weapon]);
         } else if (choice == 6){
-            System.out.println("You are upgrading " + player.getArmor());
+            System.out.println("You are upgrading " + player.getArmor().getName());
             System.out.println("This process will consume 1 upgrade shard (You have " + Player.upgradeShards + ")");
             System.out.println("Proceed? (y/n)");
-            String confirm = scan.nextLine().toLowerCase();
+            scan.nextLine();
+            String confirm = scan.nextLine();
+            confirm = confirm.toLowerCase();
 
             if (confirm.equals("y") && Player.upgradeShards > 0){
                 player.getArmor().upgrade();
@@ -141,10 +148,12 @@ public class DragonSlayer {
                 System.out.println("Invalid Choice");
             }
         } else if (choice == 7){
-            System.out.println("You are upgrading " + player.getWeapon());
+            System.out.println("You are upgrading " + player.getWeapon().getName());
             System.out.println("This process will consume 1 upgrade shard (You have " + Player.upgradeShards + ")");
             System.out.println("Proceed? (y/n)");
-            String confirm = scan.nextLine().toLowerCase();
+            scan.nextLine();
+            String confirm = scan.nextLine();
+            confirm = confirm.toLowerCase();
 
             if (confirm.equals("y") && Player.upgradeShards > 0){
                 player.getWeapon().upgrade();
@@ -159,4 +168,5 @@ public class DragonSlayer {
             System.out.println("Leaving intermission!");
         }
     }
+
 }
