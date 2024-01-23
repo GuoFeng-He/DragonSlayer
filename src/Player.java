@@ -254,7 +254,7 @@ public class Player {
         }
 
         for (Dragon dragon: mobs){
-            if (dragon.getHealth() < 0){
+            if (dragon != null && dragon.getHealth() < 0){
                 room.changeMobs(dragon.death(mobs, this));
             }
         }

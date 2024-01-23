@@ -105,7 +105,9 @@ public class Dragon {
                 damage = (int)heal();
                 System.out.println("The Dragon of Vitality healed all its allies for " + damage + " health");
                 for (Dragon dragon: mobs){
-                    dragon.damage(-damage);
+                    if (dragon != null) {
+                        dragon.damage(-damage);
+                    }
                 }
             } else if (type.equals("Berserker Dragon")){
                 System.out.println("The Berserker Dragon's rage increased!");
