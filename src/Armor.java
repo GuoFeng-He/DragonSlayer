@@ -4,10 +4,6 @@ public class Armor {
     private int dodge;
     private String name;
     private int level;
-    // for blood armor
-    private boolean lifesteal;
-    // for dragon slayer armor
-    private boolean multihit;
 
     public Armor(int health, int atk, int dodge, String name){
         this.health = health;
@@ -41,11 +37,12 @@ public class Armor {
             level++;
             System.out.println("Successfully upgraded " + name + " to level " + level + "!");
             if (stat == 1) {
+
                 System.out.println("+" + (int)(health * 1.05) + " health!");
-                health *= 1.05;
+                health = (int)(health * 1.05);
             } else if (stat == 2) {
                 System.out.println("+" + (int)(atk * 1.03) + " ATK!");
-                atk *= 1.03;
+                atk = (int)(atk * 1.03);
             } else {
                 System.out.println("+ 1% chance to dodge!");
                 dodge++;

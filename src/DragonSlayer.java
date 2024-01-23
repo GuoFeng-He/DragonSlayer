@@ -78,7 +78,9 @@ public class DragonSlayer {
             highScore = score;
         }
         System.out.println("Input anything to return to the main menu: ");
-        scan.nextLine();
+        Scanner filler = new Scanner(System.in);
+        filler.nextLine();
+        System.out.println("\n");
     }
 
     public void introDialogue(){

@@ -91,7 +91,7 @@ public class Player {
     public void printStats(){
         System.out.println(name);
         System.out.println("Attack (⚔): " + atk);
-        System.out.println("Health (♥): " + health);
+        System.out.println("Health (♥): " + health + " / " + maxHealth);
         System.out.println("Gold ($): " + gold);
         System.out.println("Skill Points: " + DragonSlayer.skillPoints);
         if (burnDuration > 0) {
@@ -121,22 +121,7 @@ public class Player {
             System.out.println();
             idx++;
         }
-        System.out.println(armorInventory.length + ". Exit");
         System.out.println();
-    }
-
-    public Weapon selectWeapon(){
-        System.out.println("Select a weapon: ");
-        int choice = scan.nextInt();
-
-        return weaponInventory[choice];
-    }
-
-    public Armor selectArmor(){
-        System.out.println("Select armor: ");
-        int choice = scan.nextInt();
-
-        return armorInventory[choice];
     }
 
     public void changeWeapon(Weapon newWeapon){
