@@ -13,6 +13,7 @@ public class DragonSlayer {
 
         System.out.print("Enter your adventurer's name: ");
         String name = scan.nextLine();
+        System.out.println();
         player = new Player(name);
         introDialogue();
         while (!quit) {
@@ -28,6 +29,7 @@ public class DragonSlayer {
     }
 
     public void play(){
+        player.reset();
         while (!gameOver && Room.roomNum < 6){
             Room newRoom = new Room();
             skillPoints = 0;
@@ -169,6 +171,10 @@ public class DragonSlayer {
         } else {
             System.out.println("Leaving intermission!");
         }
+    }
+
+    public void reset(){
+        player.reset();
     }
 
 }

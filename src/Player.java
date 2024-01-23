@@ -275,4 +275,9 @@ public class Player {
         }
         return false;
     }
+
+    public void reset(){
+        health = maxHealth;
+        gold = 0;
+    }
 }

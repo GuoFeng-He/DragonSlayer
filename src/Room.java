@@ -102,7 +102,7 @@ public class Room {
     public void printMobs(){
         for (int i = 0; i < mobs.length; i++){
             if (!(mobs[i] == null)){
-                System.out.println((i + 1) + ". [Level " + mobs[i].getLevel() + "]" +  mobs[i].getType());
+                System.out.println((i + 1) + ". [Level " + mobs[i].getLevel() + "] " +  mobs[i].getType());
                 System.out.println("Health (♥): " + mobs[i].getHealth());
                 System.out.println("Attack (⚔): " + mobs[i].getAtk() + "\n");
             }

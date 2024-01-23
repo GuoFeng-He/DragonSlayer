@@ -21,6 +21,9 @@ public class Dragon {
         if (type.equals("Berserker Dragon")){
             atk *= 1.5;
         }
+        if (type.equals("Phoenix Dragon")){
+            revive = true;
+        }
     }
 
     public String getType(){
@@ -90,14 +93,15 @@ public class Dragon {
     }
 
     public void ability(Player player, Dragon[] mobs){
-        int random = (int)(Math.random() * 3);
-        int damage = 0;
+        int random = (int)(Math.random() * 3) + 1;
+        System.out.println(random);
+        int damage;
         if (random == 1 || (type.equals("Phoenix Dragon") && random == 2) || type.equals("Dragon")){
             damage = claw();
             if (player.dodge()){
                 System.out.println("You dodged the " + type + "'s claw!");
             } else {
-                System.out.println("The " + type + " hit you for " + damage);
+                System.out.println("The " + type + " hit you for " + damage + " damage");
                 player.damage(damage);
             }
         } else if (random == 2){
@@ -146,19 +150,26 @@ public class Dragon {
     }
 
     public Dragon[] death(Dragon[] mobs, Player player){
-        System.out.println(type + " down!");
-        Dragon[] newMobs = new Dragon[mobs.length];
+        if (!revive) {
+            System.out.println(type + " down!");
+            Dragon[] newMobs = new Dragon[mobs.length];
 
-        int idx = 0;
-        for (int i = 0; i < mobs.length; i++){
-            if (!(mobs[i] == this)){
-                newMobs[idx] = mobs[i];
-                idx++;
+            int idx = 0;
+            for (int i = 0; i < mobs.length; i++) {
+                if (!(mobs[i] == this)) {
+                    newMobs[idx] = mobs[i];
+                    idx++;
+                }
             }
-        }
-        loot(player);
+            loot(player);
 
-        return newMobs;
+            return newMobs;
+        } else {
+            System.out.println("The Phoenix Dragon revived itself to half health! Its attack increased as well.");
+            revive = false;
+            lastBreath();
+            return mobs;
+        }
     }
 
     public void loot(Player player){
