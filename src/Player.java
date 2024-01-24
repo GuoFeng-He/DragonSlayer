@@ -91,7 +91,7 @@ public class Player {
     public void printStats(){
         System.out.println(name);
         System.out.println("Attack (⚔): " + atk);
-        System.out.println("Health (♥): " + health + " / " + maxHealth);
+        System.out.println("Health (" + Color.RED + "♥" + Color.RESET + "): " + health + " / " + maxHealth);
         System.out.println("Gold ($): " + gold);
         System.out.println("Skill Points: " + DragonSlayer.skillPoints);
         if (burnDuration > 0) {
@@ -102,7 +102,7 @@ public class Player {
     public void printWeaponInventory(){
         int idx = 1;
         for (Weapon weapon: weaponInventory){
-            System.out.print(idx + ". " + weapon.getName() + "[Level " + weapon.getLevel() + "]");
+            System.out.print(idx + ". " + weapon.getName() + " [Level " + weapon.getLevel() + "]");
             if (weapon == this.weapon){
                 System.out.print(" << Currently equipped >>");
             }
@@ -114,7 +114,7 @@ public class Player {
     public void printArmorInventory(){
         int idx = 1;
         for (Armor armor: armorInventory){
-            System.out.print(idx + ". " + armor.getName() + "[Level " + armor.getLevel() + "]");
+            System.out.print(idx + ". " + armor.getName() + " [Level " + armor.getLevel() + "]");
             if (armor == this.armor){
                 System.out.print(" << Currently equipped >>");
             }
@@ -191,6 +191,9 @@ public class Player {
             attack(room.getMobs(), 3, room);
         } else {
             health += maxHealth * 0.75;
+            if (health > maxHealth){
+                health = maxHealth;
+            }
             healthPotAmount--;
             System.out.println("You drank a health pot and recovered 75% of your health!");
         }
@@ -202,27 +205,27 @@ public class Player {
             int target = target(mobs);
             if (move == 1){
                 damage = swordSwing();
-                System.out.println("You hit the " + mobs[target].getType()+ " for " + damage + " damage!");
+                System.out.println(Color.CYAN + "You hit the " + mobs[target].getType()+ " for " + damage + " damage!");
                 mobs[target].damage(damage);
                 DragonSlayer.skillPoints++;
             } else {
                 damage = swordCleave();
                 if (target == 0 || target == mobs.length - 1){
                     if (target == 0) {
-                        if (mobs.length == 1){
-                            System.out.println("You hit the " + mobs[target].getType() + " for " + damage + " damage!");
+                        if (mobs.length == 1 || mobs[target + 1] == null){
+                            System.out.println(Color.CYAN + "You hit the " + mobs[target].getType() + " for " + damage + " damage!");
                         } else {
-                            System.out.println("You hit the " + mobs[target].getType() + " and " + mobs[target + 1].getType() + " for " + damage + " damage!");
+                            System.out.println(Color.CYAN + "You hit the " + mobs[target].getType() + " and " + mobs[target + 1].getType() + " for " + damage + " damage!");
                             mobs[target].damage(damage);
                             mobs[target + 1].damage(damage);
                         }
                     } else{
-                        System.out.println("You hit the " + mobs[target].getType()+ " and " + mobs[target - 1].getType()+ " for " + damage + " damage!");
+                        System.out.println(Color.CYAN + "You hit the " + mobs[target].getType()+ " and " + mobs[target - 1].getType()+ " for " + damage + " damage!");
                         mobs[target].damage(damage);
                         mobs[target - 1].damage(damage);
                     }
                 } else {
-                    System.out.println("You hit the " + mobs[target - 1].getType()+ ", " + mobs[target].getType()+ " and " + mobs[target + 1].getType()+ " for " + damage + " damage!");
+                    System.out.println(Color.CYAN + "You hit the " + mobs[target - 1].getType()+ ", " + mobs[target].getType()+ " and " + mobs[target + 1].getType()+ " for " + damage + " damage!");
                     mobs[target - 1].damage(damage);
                     mobs[target].damage(damage);
                     mobs[target + 1].damage(damage);
@@ -231,19 +234,18 @@ public class Player {
             }
         } else {
             damage = cascadingLance();
-            System.out.println("You hit all targets for " + damage + " damage!");
+            System.out.println(Color.CYAN + "You hit all targets for " + damage + " damage!");
             for (Dragon dragon: mobs){
-                dragon.damage(damage);
+                if (dragon != null) {
+                    dragon.damage(damage);
+                }
             }
             DragonSlayer.skillPoints -= 4;
         }
 
-        for (Dragon dragon: mobs){
-            if (dragon != null && dragon.getHealth() < 0){
-                room.changeMobs(dragon.death(mobs, this));
-            }
-        }
+        changeDead(room, mobs);
         DragonSlayer.skillPoints++;
+        System.out.print(Color.RESET);
     }
 
     public int target(Dragon[] mobs){
@@ -265,7 +267,7 @@ public class Player {
     public void burnDamage(){
         health -= burnDamage;
         burnDuration--;
-        System.out.println("You took " + burnDamage + " burn damage");
+        System.out.println(Color.RED + "You took " + burnDamage + " burn damage" + Color.RESET);
     }
 
     public boolean dodge(){
@@ -279,5 +281,13 @@ public class Player {
     public void reset(){
         health = maxHealth;
         gold = 0;
+    }
+
+    public void changeDead(Room room, Dragon[] mobs){
+        for (Dragon dragon: mobs){
+            if (dragon != null && dragon.getHealth() < 0){
+                room.changeMobs(dragon.death(mobs, this));
+            }
+        }
     }
 }

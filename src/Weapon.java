@@ -25,17 +25,19 @@ public class Weapon {
         return level;
     }
 
-    public void upgrade(){
+    public void upgrade(Player player){
         if (level < 15) {
             int stat = (int) (Math.random() * 2) + 1;
             level++;
             System.out.println("Successfully upgraded " + name + " to level " + level + "!");
              if (stat == 1) {
-                System.out.println("+" + (int)(atk * 1.03) + " ATK!");
-                atk *= 1.03;
+                System.out.println("+" + (int)(atk * 0.2) + " ATK!");
+                atk *= 1.2;
+                 player.changeCombatStats(0, (int)(atk * 0.2), 0);
             } else {
-                System.out.println("+ 1% chance to dodge!");
+                System.out.println("+1% chance to dodge!");
                 dodge++;
+                 player.changeCombatStats(0, 0, 1);
             }
             Player.upgradeShards--;
         } else {

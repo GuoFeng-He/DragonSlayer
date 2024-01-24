@@ -17,10 +17,12 @@ public class DragonSlayer {
         player = new Player(name);
         introDialogue();
         while (!quit) {
+            reset();
+            System.out.println("Current High Score: " + highScore);
             int choice = chooseDifficulty();
-            gameOver = false;
             if (choice == 3){
                 quit = true;
+                System.out.println("Quitting game...");
             } else {
                 setDifficultyScale(choice);
                 play();
@@ -30,7 +32,7 @@ public class DragonSlayer {
 
     public void play(){
         player.reset();
-        while (!gameOver && Room.roomNum < 6){
+        while (!gameOver && Room.roomNum < 5){
             Room newRoom = new Room();
             skillPoints = 0;
             while (!newRoom.isCleared() && !gameOver) {
@@ -52,9 +54,11 @@ public class DragonSlayer {
                 }
                 newRoom.cleared();
             }
+            Player.burnDuration = 0;
             int intermission = 0;
             while (intermission != 8 && !gameOver){
-                System.out.println("\nIntermission!");
+                System.out.println("--------------------------------");
+                System.out.println("Intermission!");
                 System.out.println("1. Search Room");
                 System.out.println("2. Print Armor Stats");
                 System.out.println("3. Print Weapon Stats");
@@ -143,7 +147,7 @@ public class DragonSlayer {
             confirm = confirm.toLowerCase();
 
             if (confirm.equals("y") && Player.upgradeShards > 0){
-                player.getArmor().upgrade();
+                player.getArmor().upgrade(player);
             } else if (Player.upgradeShards == 0){
                 System.out.println("You do not have any upgrade shards");
             } else if (confirm.equals("n")){
@@ -160,7 +164,7 @@ public class DragonSlayer {
             confirm = confirm.toLowerCase();
 
             if (confirm.equals("y") && Player.upgradeShards > 0){
-                player.getWeapon().upgrade();
+                player.getWeapon().upgrade(player);
             } else if (Player.upgradeShards == 0){
             System.out.println("You do not have any upgrade shards");
             } else if (confirm.equals("n")){
@@ -168,13 +172,17 @@ public class DragonSlayer {
             } else {
                 System.out.println("Invalid Choice");
             }
-        } else {
+        } else if (choice == 8){
             System.out.println("Leaving intermission!");
+        } else {
+            System.out.println("Invalid option");
         }
     }
 
     public void reset(){
         player.reset();
+        gameOver = false;
+        Room.roomNum = 0;
     }
 
 }

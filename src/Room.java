@@ -7,9 +7,11 @@ public class Room {
     private int dragonLevels;
     private Dragon[] mobs;
     private boolean cleared;
+    private boolean searched;
 
     public Room(){;
         roomNum += 1;
+        searched = false;
         setRoom();
         if (Math.round(Math.random() * 2) + 1 == 1){
             hasHealthPot = true;
@@ -59,7 +61,7 @@ public class Room {
                 dragonLevels = 3;
             } else if (roomNum == 5) {
                 roomName = "Treasure Room (Room 5 / 5)";
-                entranceText = "A room filled to the brim with treasure. A massive dragon stares you down."; // do this
+                entranceText = "A room filled to the brim with treasure." ;
                 numberOfMobs = 3;
                 dragonLevels = 3;
             }
@@ -103,21 +105,27 @@ public class Room {
         for (int i = 0; i < mobs.length; i++){
             if (!(mobs[i] == null)){
                 System.out.println((i + 1) + ". [Level " + mobs[i].getLevel() + "] " +  mobs[i].getType());
-                System.out.println("Health (♥): " + mobs[i].getHealth());
+                System.out.println("Health (" + Color.RED + "♥" + Color.RESET + "): " + mobs[i].getHealth());
                 System.out.println("Attack (⚔): " + mobs[i].getAtk() + "\n");
             }
         }
     }
 
     public void searchRoom(){
-        if (hasHealthPot){
-            System.out.println("You found a health pot!");
-            Player.healthPotAmount++;
-            hasHealthPot = false;
-
+        if (!searched) {
+            if (hasHealthPot) {
+                System.out.println(Color.YELLOW + "You found a health pot!");
+                Player.healthPotAmount++;
+                hasHealthPot = false;
+                searched = true;
+            } else {
+                System.out.println(Color.YELLOW + "You found nothing.");
+                searched = true;
+            }
         } else {
-            System.out.println("You found nothing.");
+            System.out.println(Color.YELLOW + "You already searched this room");
         }
+        System.out.print(Color.RESET);
     }
 
     public boolean allNull(){

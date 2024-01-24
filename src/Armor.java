@@ -31,21 +31,23 @@ public class Armor {
     }
 
     // upgrading armor
-    public void upgrade(){
+    public void upgrade(Player player){
         if (level < 15) {
             int stat = (int) (Math.random() * 3) + 1;
             level++;
             System.out.println("Successfully upgraded " + name + " to level " + level + "!");
             if (stat == 1) {
-
-                System.out.println("+" + (int)(health * 1.05) + " health!");
-                health = (int)(health * 1.05);
+                System.out.println("+" + (int)(health * 0.3) + " health!");
+                health = (int)(health * 1.3);
+                player.changeCombatStats((int)(health * 0.3), 0, 0);
             } else if (stat == 2) {
-                System.out.println("+" + (int)(atk * 1.03) + " ATK!");
-                atk = (int)(atk * 1.03);
+                System.out.println("+" + (int)(atk * 0.1) + " ATK!");
+                atk = (int)(atk * 1.1);
+                player.changeCombatStats(0, (int)(atk * 0.1), 0);
             } else {
-                System.out.println("+ 1% chance to dodge!");
+                System.out.println("+1% chance to dodge!");
                 dodge++;
+                player.changeCombatStats(0, 0, 1);
             }
             Player.upgradeShards--;
         } else {
@@ -55,7 +57,7 @@ public class Armor {
 
     public void printStats(){
         System.out.println(name + " [Level " + level + "]");
-        System.out.println("Health (♥): " + health);
+        System.out.println("Health (" + Color.RED + "♥" + Color.RESET + "): " + health);
         System.out.println("Attack (⚔): " + atk);
         System.out.println("Dodge (\uD83D\uDC5F): " + dodge);
     }
