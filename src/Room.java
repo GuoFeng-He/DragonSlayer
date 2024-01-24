@@ -13,27 +13,30 @@ public class Room {
         roomNum += 1;
         searched = false;
         setRoom();
-        if (Math.round(Math.random() * 2) + 1 == 1){
+        if (Math.round(Math.random() * 2) + 1 == 1){ // random 1 / 2 chance for a room to contain a health pot
             hasHealthPot = true;
         } else {
             hasHealthPot = false;
         }
 
         mobs = new Dragon[numberOfMobs];
-        for (int i = 0; i < numberOfMobs; i++) {
+        for (int i = 0; i < numberOfMobs; i++) { // creates dragons
             Dragon dragon = new Dragon(Dragon.randomType(), dragonLevels);
             mobs[i] = dragon;
         }
     }
 
+    // getter for the list of all active dragons
     public Dragon[] getMobs(){
         return mobs;
     }
 
+    // returns whether a room has been cleared
     public boolean isCleared(){
         return cleared;
     }
 
+    // setter method for room description and name
     public void setRoom(){
         numberOfMobs = 0;
         cleared = false;
@@ -95,6 +98,7 @@ public class Room {
         }
     }
 
+    // print methods for room name/description and for dragon names/stats
     public void printRoomInfo(){
         System.out.println("\n\n" + roomName);
         System.out.println(entranceText);
@@ -111,6 +115,7 @@ public class Room {
         }
     }
 
+    // method that allows the player to search for and potentially find a health potion
     public void searchRoom(){
         if (!searched) {
             if (hasHealthPot) {
@@ -128,6 +133,7 @@ public class Room {
         System.out.print(Color.RESET);
     }
 
+    // returns whether all dragons are dead
     public boolean allNull(){
         for (int i = 0; i < mobs.length; i++){
             if (mobs[i] != null){
@@ -137,12 +143,14 @@ public class Room {
         return true;
     }
 
+    // checks whether the room had been cleared (or not)
     public void cleared(){
         if (allNull()){
             cleared = true;
         }
     }
 
+    // changes list that contains all active dragons
     public void changeMobs(Dragon[] newMobs){
         mobs = newMobs;
     }

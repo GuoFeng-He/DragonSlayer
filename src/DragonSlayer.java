@@ -14,13 +14,13 @@ public class DragonSlayer {
         System.out.print("Enter your adventurer's name: ");
         String name = scan.nextLine();
         System.out.println();
-        player = new Player(name);
+        player = new Player(name); // get player name
         introDialogue();
         while (!quit) {
             reset();
             System.out.println("Current High Score: " + highScore);
             int choice = chooseDifficulty();
-            if (choice == 3){
+            if (choice == 3){ // quit game
                 quit = true;
                 System.out.println("Quitting game...");
             } else {
@@ -30,29 +30,30 @@ public class DragonSlayer {
         }
     }
 
+    // the game
     public void play(){
         player.reset();
         while (!gameOver && Room.roomNum < 5){
             Room newRoom = new Room();
-            skillPoints = 0;
+            skillPoints = 0; // reset skill points at the start of every room
             while (!newRoom.isCleared() && !gameOver) {
-                newRoom.printRoomInfo();
+                newRoom.printRoomInfo(); // prints info about dragons and the player
                 newRoom.printMobs();
-
                 player.printStats();
                 player.act(newRoom);
-                if (Player.burnDuration > 0) {
+
+                if (Player.burnDuration > 0) { // burn
                     player.burnDamage();
                 }
-                for (Dragon dragon: newRoom.getMobs()){
+                for (Dragon dragon: newRoom.getMobs()){ // dragon abilities
                     if (dragon != null && dragon.getHealth() > 0) {
                         dragon.ability(player, newRoom.getMobs());
                     }
-                    if (player.getHealth() < 0){
+                    if (player.getHealth() < 0){ // losing condition
                         gameOver = true;
                     }
                 }
-                newRoom.cleared();
+                newRoom.cleared(); // checks whether the room is cleared at the end of every cycle
             }
             Player.burnDuration = 0;
             int intermission = 0;
@@ -72,7 +73,9 @@ public class DragonSlayer {
                 intermission(intermission, newRoom);
             }
         }
+        // end score calculation
         int score = player.getGold() * 100;
+        // victory/lost messages
         if (player.getHealth() < 0){
             System.out.println("You died!");
             System.out.println("Final Score: " + score);
@@ -80,6 +83,7 @@ public class DragonSlayer {
             System.out.println("GG you won!");
             System.out.println("Final Score: " + score);
         }
+        // edit high score if score is higher
         if (score > highScore){
             highScore = score;
         }
@@ -89,6 +93,7 @@ public class DragonSlayer {
         System.out.println("\n");
     }
 
+    // intro dialogue for when the game first loads
     public void introDialogue(){
         System.out.println("Hello " + player.getName());
         System.out.println("Welcome to the dungeons!");
@@ -98,6 +103,7 @@ public class DragonSlayer {
         System.out.println();
     }
 
+    // method that allows the user to select difficulty
     public int chooseDifficulty(){
         System.out.println("1. Normal Mode: Standard Difficulty");
         System.out.println("2. Master Mode: A Harder Challenge! <highly recommended to beat normal mode first>");
@@ -121,6 +127,7 @@ public class DragonSlayer {
         }
     }
 
+    // method for intermission between rooms (where user can edit/view their kit)
     public void intermission(int choice, Room room){
         if (choice == 1){
             room.searchRoom();
@@ -179,10 +186,10 @@ public class DragonSlayer {
         }
     }
 
+    // resets the game at the start of every run
     public void reset(){
         player.reset();
         gameOver = false;
         Room.roomNum = 0;
     }
-
 }

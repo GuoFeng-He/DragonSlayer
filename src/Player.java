@@ -17,6 +17,7 @@ public class Player {
     private Armor[] armorInventory;
     private Weapon[] weaponInventory;
 
+    // initializes base stats for the player
     public Player(String name){
         this.name = name;
         health = 100;
@@ -27,13 +28,14 @@ public class Player {
         upgradeShards = 0;
         armorInventory = new Armor[0];
         weaponInventory = new Weapon[0];
-        armor = new Armor(150, 25, 10, "Mercenary Armor");
+        armor = new Armor(150, 25, 10, "Mercenary Armor"); // starting armor
         addArmor(armor);
-        weapon = new Weapon("Iron Sword", 75, 20);
+        weapon = new Weapon("Iron Sword", 75, 20); // starting weapon
         addWeapon(weapon);
         changeCombatStats(150, 100, 30);
     }
 
+    // getters
     public String getName(){
         return name;
     }
@@ -62,6 +64,7 @@ public class Player {
         return weaponInventory;
     }
 
+    // setters used to set gold, armor, and weapons
     public void addGold(int gold){
         this.gold += gold;
     }
@@ -88,6 +91,7 @@ public class Player {
         weaponInventory = newWeaponInventory;
     }
 
+    // methods used to print important information about the player
     public void printStats(){
         System.out.println(name);
         System.out.println("Attack (⚔): " + atk);
@@ -124,10 +128,11 @@ public class Player {
         System.out.println();
     }
 
+    // changes the player's current kit
     public void changeWeapon(Weapon newWeapon){
         int [] oldStats = weapon.getStats();
         int [] newStats = newWeapon.getStats();
-        changeCombatStats(0, -oldStats[0], -oldStats[1]);
+        changeCombatStats(0, -oldStats[0], -oldStats[1]); // remove stats of old weapon, adds stats of new weapon
         changeCombatStats(0, newStats[0], newStats[1]);
         weapon = newWeapon;
     }
@@ -135,11 +140,12 @@ public class Player {
     public void changeArmor(Armor newArmor){
         int [] oldStats = armor.getStats();
         int [] newStats = newArmor.getStats();
-        changeCombatStats(-oldStats[0], -oldStats[1], -oldStats[2]);
+        changeCombatStats(-oldStats[0], -oldStats[1], -oldStats[2]); // remove stats of old armor, add stats of new armor
         changeCombatStats(newStats[0], newStats[1], newStats[2]);
         armor = newArmor;
     }
 
+    // changes player health, atk, and dodge accordingly
     public void changeCombatStats(int health, int atk, int dodge){
         this.atk += atk;
         this.dodge += dodge;
@@ -147,6 +153,7 @@ public class Player {
         maxHealth += health;
     }
 
+    // player attacking abilities
     public int swordSwing(){
         double random = (Math.random() + 0.76) * atk;
         return (int) random;
@@ -162,6 +169,7 @@ public class Player {
         return (int) random;
     }
 
+    // player action menu
     public void act(Room room){
         int choice = 0;
         boolean pass = false;
@@ -190,7 +198,7 @@ public class Player {
         } else if (choice == 3){
             attack(room.getMobs(), 3, room);
         } else {
-            health += maxHealth * 0.75;
+            health += maxHealth * 0.75; // option 4: drinking a health potion
             if (health > maxHealth){
                 health = maxHealth;
             }
@@ -199,6 +207,8 @@ public class Player {
         }
     }
 
+    // manages damage done by the player against dragons according to respective ability used
+    // manages skill point gain/uses as well
     public void attack(Dragon[] mobs, int move, Room room){
         int damage;
         if (move != 3) {
@@ -236,7 +246,7 @@ public class Player {
             damage = cascadingLance();
             System.out.println(Color.CYAN + "You hit all targets for " + damage + " damage!");
             for (Dragon dragon: mobs){
-                if (dragon != null) {
+                if (dragon != null) { // deals damage to dragons that are not dead
                     dragon.damage(damage);
                 }
             }
@@ -248,6 +258,7 @@ public class Player {
         System.out.print(Color.RESET);
     }
 
+    // allows the player to select a specific dragon to target
     public int target(Dragon[] mobs){
         System.out.println("Pick a target (number): ");
         int choice = scan.nextInt();
@@ -260,6 +271,7 @@ public class Player {
         return choice - 1;
     }
 
+    // methods used for dealing damage to the player
     public void damage(int damage){
         health -= damage;
     }
@@ -270,6 +282,7 @@ public class Player {
         System.out.println(Color.RED + "You took " + burnDamage + " burn damage" + Color.RESET);
     }
 
+    // returns whether a dodge is successful/unsuccessful
     public boolean dodge(){
         int random = (int)(Math.random() * 100) + 1;
         if (dodge > random){
@@ -278,11 +291,13 @@ public class Player {
         return false;
     }
 
+    // resets player health/coin amount
     public void reset(){
         health = maxHealth;
         gold = 0;
     }
 
+    // uses the method changeMobs to remove dead dragons from the "mobs" array
     public void changeDead(Room room, Dragon[] mobs){
         for (Dragon dragon: mobs){
             if (dragon != null && dragon.getHealth() < 0){

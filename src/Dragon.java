@@ -12,6 +12,7 @@ public class Dragon {
         setStats();
     }
 
+    // edit base stats of dragons
     private void setStats(){
         health = 100 * 3 * level * DragonSlayer.difficultyScale;
         if (type.equals("Dragon of Vitality")){
@@ -27,6 +28,7 @@ public class Dragon {
         maxHealth = health;
     }
 
+    // getters
     public String getType(){
         return type;
     }
@@ -43,6 +45,7 @@ public class Dragon {
         return level;
     }
 
+    // static method used to randomly choose dragon types
     public static String randomType(){
         int random = (int)(Math.random() * 4);
         String type = "";
@@ -58,6 +61,7 @@ public class Dragon {
         return type;
     }
 
+    // base attack for every dragon
     public int claw(){
         return atk;
     }
@@ -75,6 +79,7 @@ public class Dragon {
     }
 
     /* Dragon of Vitality */
+    // heals allies
     public double heal(){
         return maxHealth * 0.1;
     }
@@ -84,6 +89,7 @@ public class Dragon {
     }
 
     /* Berserker Dragon */
+    // buffs its attack
     public void powerAmplification(double multiplier){
         atk *= multiplier;
     }
@@ -93,6 +99,7 @@ public class Dragon {
         return (int)(atk * 2);
     }
 
+    // method used to activate dragon abilities according to their type
     public void ability(Player player, Dragon[] mobs){
         int random = (int)(Math.random() * 3) + 1;
         int damage;
@@ -151,22 +158,25 @@ public class Dragon {
         }
     }
 
+    /* method used everytime a dragon dies
+    *  the dragon is removed from the "mobs" list, so it will not get printed/interacted with.
+    *  a new list is returned that does not include it
+    */
     public Dragon[] death(Dragon[] mobs, Player player){
         if (!revive) {
             System.out.println(Color.CYAN + type + " down!" + Color.RESET);
             Dragon[] newMobs = new Dragon[mobs.length];
-
             int idx = 0;
+
             for (int i = 0; i < mobs.length; i++) {
                 if (!(mobs[i] == this) && (mobs[i] != null && mobs[i].health > 0)) {
                     newMobs[idx] = mobs[i];
                     idx++;
                 }
             }
-            loot(player);
-
+            loot(player); // all dragons drop loot when they die
             return newMobs;
-        } else {
+        } else { // revive ability exclusive to the phoenix dragon
             System.out.println(Color.GREEN + "The Phoenix Dragon revived itself to half health! Its attack increased as well." + Color.RESET);
             revive = false;
             lastBreath();
@@ -174,6 +184,7 @@ public class Dragon {
         }
     }
 
+    // generates random loot that will be dropped.
     public void loot(Player player){
         int random = (int)(Math.random() * 8);
         if (random == 0 || random == 1){
@@ -209,6 +220,7 @@ public class Dragon {
             player.addWeapon(newWeapon);
             System.out.println(Color.BLUE + "You got a " + newWeapon.getName() + "!");
         }
+        // all dragons drop a set amount of gold (more gold in master mode)
         if (DragonSlayer.difficultyScale == 1){
             System.out.println(Color.RESET + Color.YELLOW + "The dragon gave you 10 gold!" + Color.RESET);
             player.addGold(10);
@@ -218,6 +230,7 @@ public class Dragon {
         }
     }
 
+    // dragon taking damage
     public void damage(int damage){
         health -= damage;
     }

@@ -4,6 +4,7 @@ public class Weapon {
     private int dodge;
     private int level;
 
+    // creates weapon with its name and base attack/dodge chance. all weapons start at level 1.
     public Weapon(String name, int atk, int dodge){
         this.name = name;
         this.atk = atk;
@@ -11,6 +12,7 @@ public class Weapon {
         level = 1;
     }
 
+    // getters
     public int[] getStats(){
         int[] stats = new int[2];
         stats[0] = atk;
@@ -25,6 +27,9 @@ public class Weapon {
         return level;
     }
 
+    /* method used for upgrading weapons.
+    * A random stat is chosen everytime to be upgraded (requires one upgrade shard per upgrade)
+    */
     public void upgrade(Player player){
         if (level < 15) {
             int stat = (int) (Math.random() * 2) + 1;
@@ -45,6 +50,7 @@ public class Weapon {
         }
     }
 
+    // prints weapon stats
     public void printStats(){
         System.out.println(name + " [Level " + level + "]");
         System.out.println("Attack (⚔): " + atk);

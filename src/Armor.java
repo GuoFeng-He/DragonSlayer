@@ -13,6 +13,7 @@ public class Armor {
         level = 1;
     }
 
+    // getters
     public int[] getStats(){
         int[] stats = new int[4];
         stats[0] = health;
@@ -55,6 +56,7 @@ public class Armor {
         }
     }
 
+    // prints stats of the armor
     public void printStats(){
         System.out.println(name + " [Level " + level + "]");
         System.out.println("Health (" + Color.RED + "♥" + Color.RESET + "): " + health);
